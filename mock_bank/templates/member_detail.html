@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Member Account Record - {{ member.member_id }}</title>
+    <style>
+        body { font-family: Tahoma, 'MS Sans Serif', Arial, sans-serif; font-size: 11px; background-color: #f0f4f8; margin: 10px; color: #1e293b; }
+        .panel-outer { border: 2px solid #708090; background-color: #ffffff; padding: 1px; }
+        .panel-header { background: linear-gradient(180deg, #2b6cb0, #1a365d); color: white; padding: 5px 8px; font-weight: bold; font-size: 12px; }
+        .info-grid { width: 100%; border-collapse: collapse; margin-bottom: 8px; background-color: #f8fafc; border-bottom: 1px solid #cbd5e1; }
+        .info-grid td { padding: 4px 8px; font-size: 11px; }
+        .info-label { font-weight: bold; color: #475569; width: 120px; text-align: right; }
+        .info-value { color: #0f172a; font-weight: 600; }
+        .section-hdr { background: #e2e8f0; font-weight: bold; padding: 4px 8px; border-top: 1px solid #cbd5e1; border-bottom: 1px solid #cbd5e1; color: #1e293b; }
+        .ledger-tbl { width: 100%; border-collapse: collapse; margin-top: 4px; }
+        .ledger-tbl th { background-color: #475569; color: white; padding: 5px; font-size: 11px; text-align: left; border: 1px solid #64748b; }
+        .ledger-tbl td { padding: 5px; border: 1px solid #cbd5e1; font-size: 11px; }
+        .ledger-tbl tr:nth-child(even) { background-color: #f8fafc; }
+        .btn-legacy { background: #e2e8f0; border: 2px outset #ffffff; padding: 3px 10px; font-weight: bold; font-size: 11px; cursor: pointer; color: #0f172a; text-decoration: none; display: inline-block; }
+        .btn-legacy:active { border-style: inset; }
+        #loading_indicator { display: none; background: #fef08a; border: 1px solid #ca8a04; color: #854d0e; padding: 6px; text-align: center; font-weight: bold; margin: 4px 0; }
+    </style>
+</head>
+<body>
+    <div class="panel-outer">
+        <div class="panel-header">MEMBER RECORD: {{ member.member_id }} &mdash; {{ member.full_name }}</div>
+        
+        <div id="loading_indicator">
+            <span class="spinner">&#9696;</span> Fetching live core ledger records... please wait...
+        </div>
+
+        <table class="info-grid">
+            <tr>
+                <td class="info-label">Member ID:</td>
+                <td class="info-value" id="lbl_member_id">{{ member.member_id }}</td>
+                <td class="info-label">Status:</td>
+                <td class="info-value" id="lbl_member_status">
+                    <span style="color: {{ '#15803d' if member.accounts[0].status == 'ACTIVE' else '#b91c1c' }};">
+                        {{ member.accounts[0].status }}
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="info-label">Full Name:</td>
+                <td class="info-value" id="lbl_full_name">{{ member.full_name }}</td>
+                <td class="info-label">Date of Birth:</td>
+                <td class="info-value">{{ member.dob }}</td>
+            </tr>
+            <tr>
+                <td class="info-label">Address:</td>
+                <td class="info-value">{{ member.address }}</td>
+                <td class="info-label">SSN (Last 4):</td>
+                <td class="info-value">***-**-{{ member.ssn_last4 }}</td>
+            </tr>
+        </table>
+
+        <div class="section-hdr">DEPOSIT ACCOUNTS &amp; SHARE BALANCES</div>
+        <table class="ledger-tbl" id="tbl_accounts_ledger">
+            <thead>
+                <tr>
+                    <th>Account Number</th>
+                    <th>Account Type</th>
+                    <th>Available Balance</th>
+                    <th>Current Balance</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for acc in member.accounts %}
+                <tr>
+                    <td><strong>{{ acc.account_number }}</strong></td>
+                    <td class="acc-type-label">{{ acc.account_type }}</td>
+                    <td class="avail-balance">${{ acc.available_balance|currency }}</td>
+                    <td class="curr-balance">${{ acc.balance|currency }}</td>
+                    <td>{{ acc.status }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div style="margin: 12px 8px;">
+            <a href="/servicing/lookup" class="btn-legacy">&larr; Back to Member Search</a>
+            <a href="/servicing/transfer?from_member={{ member.member_id }}" class="btn-legacy" style="margin-left: 8px;">Initiate Transfer &rarr;</a>
+        </div>
+    </div>
+
+    {% if simulate_delay %}
+    <script>
+        document.getElementById('loading_indicator').style.display = 'block';
+        document.getElementById('tbl_accounts_ledger').style.opacity = '0.3';
+        setTimeout(function() {
+            document.getElementById('loading_indicator').style.display = 'none';
+            document.getElementById('tbl_accounts_ledger').style.opacity = '1.0';
+        }, 1500);
+    </script>
+    {% endif %}
+</body>
+</html>

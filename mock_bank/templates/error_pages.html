@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>System Notification</title>
+    <style>
+        body { font-family: Tahoma, 'MS Sans Serif', Arial, sans-serif; font-size: 11px; background-color: #f0f4f8; margin: 20px; }
+        .error-card { background: #ffffff; border: 2px solid #b91c1c; padding: 16px; width: 450px; margin: 40px auto; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        .error-hdr { font-size: 14px; font-weight: bold; color: #991b1b; margin-bottom: 8px; border-bottom: 1px solid #fecaca; padding-bottom: 6px; }
+        .btn-legacy { background: #e2e8f0; border: 2px outset #ffffff; padding: 4px 14px; font-weight: bold; font-size: 11px; cursor: pointer; color: #0f172a; text-decoration: none; display: inline-block; margin-top: 12px; }
+    </style>
+</head>
+<body>
+    <div class="error-card">
+        <div class="error-hdr">&#9888; {{ error_title }}</div>
+        <p style="font-size: 12px; color: #334155;">{{ error_details }}</p>
+        <p style="font-size: 10px; color: #64748b;">Event Reference: ERR-HOST-{{ timestamp }}</p>
+        <a href="/servicing/lookup" class="btn-legacy" id="btn_error_dismiss">Acknowledge &amp; Return</a>
+    </div>
+</body>
+</html>

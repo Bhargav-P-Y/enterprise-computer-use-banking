@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Funds Transfer Wizard</title>
+    <style>
+        body { font-family: Tahoma, 'MS Sans Serif', Arial, sans-serif; font-size: 11px; background-color: #f0f4f8; margin: 10px; color: #1e293b; }
+        .panel-outer { border: 2px solid #708090; background-color: #ffffff; padding: 1px; }
+        .panel-header { background: linear-gradient(180deg, #1e3a8a, #0f172a); color: white; padding: 5px 8px; font-weight: bold; font-size: 12px; }
+        table.form-tbl { border: 1px solid #cbd5e1; margin: 10px; background-color: #f8fafc; border-collapse: collapse; }
+        table.form-tbl td { padding: 6px 12px; font-size: 11px; }
+        .field-label { font-weight: bold; color: #334155; text-align: right; width: 160px; }
+        .txt-legacy { border: 1px solid #7f9db9; padding: 3px; font-family: monospace; font-size: 12px; width: 180px; }
+        .btn-legacy { background: #e2e8f0; border: 2px outset #ffffff; padding: 4px 14px; font-weight: bold; font-size: 11px; cursor: pointer; color: #0f172a; }
+        .btn-legacy:active { border-style: inset; }
+        .btn-danger { background: #fee2e2; border-color: #fca5a5; color: #991b1b; }
+        .success-box { background: #dcfce7; border: 1px solid #22c55e; color: #14532d; padding: 12px; margin: 10px; font-size: 12px; }
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; }
+        .modal-box { position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%); background: #ffffff; border: 3px solid #dc2626; box-shadow: 0 10px 25px rgba(0,0,0,0.5); width: 380px; padding: 15px; }
+        .modal-header { background: #dc2626; color: white; margin: -15px -15px 10px -15px; padding: 6px 10px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="panel-outer">
+        <div class="panel-header">INTERNAL WIRE / SUB-ACCOUNT TRANSFER WIZARD</div>
+
+        {% if success_data %}
+            <div class="success-box" id="transfer_success_banner">
+                <strong>TRANSFER COMPLETED SUCCESSFULLY</strong><br>
+                Confirmation Number: <strong id="lbl_conf_number">{{ success_data.confirmation_number }}</strong><br>
+                Remaining Savings Balance: {{ success_data.new_balance }}<br>
+                <div style="margin-top: 10px;">
+                    <a href="/servicing/lookup" class="btn-legacy">&larr; Return to Member Search</a>
+                </div>
+            </div>
+        {% else %}
+            <form method="POST" action="/servicing/transfer" id="frm_transfer">
+                <table class="form-tbl">
+                    <tr>
+                        <td class="field-label">From Member ID:</td>
+                        <td>
+                            <input type="text" name="ctl00$Main$txtFromMember" id="ctl00_Main_txtFromMember" class="txt-legacy" value="{{ from_member if from_member else '' }}" required />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="field-label">Destination Account #:</td>
+                        <td>
+                            <input type="text" name="ctl00$Main$txtToAccount" id="ctl00_Main_txtToAccount" class="txt-legacy" value="SAV-9910-01" required />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="field-label">Transfer Amount ($):</td>
+                        <td>
+                            <input type="number" step="0.01" name="ctl00$Main$txtAmount" id="ctl00_Main_txtAmount" class="txt-legacy" value="500.00" required />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td style="padding-top: 10px;">
+                            <input type="submit" name="ctl00$Main$btnConfirmTransfer" id="ctl00_Main_btnConfirmTransfer" value="Submit Transfer" class="btn-legacy btn-danger" />
+                            <a href="/servicing/lookup" class="btn-legacy" style="margin-left: 8px; text-decoration: none;">Cancel</a>
+                        </td>
+                    </tr>
+                </table>
+
+                <!-- Hidden or dynamic modal for Manager Override -->
+                <div id="overrideModal" class="modal-overlay" style="{{ 'display: block;' if auth_required else '' }}">
+                    <div class="modal-box">
+                        <div class="modal-header">&#9888; MANAGER OVERRIDE CODE REQUIRED</div>
+                        <p style="font-size: 11px; color: #475569;">
+                            Policy Exception: Transfers exceeding $5,000.00 require supervisor validation.
+                        </p>
+                        <div style="margin: 10px 0;">
+                            <label style="font-weight: bold;">Manager PIN / Code:</label><br>
+                            <input type="password" name="override_code" id="txt_override_code" class="txt-legacy" style="width: 200px; margin-top: 4px;" autocomplete="off" />
+                        </div>
+                        <div style="text-align: right; margin-top: 15px;">
+                            <input type="submit" name="btn_submit_override" id="btn_submit_override" value="Authorize and Proceed" class="btn-legacy" style="background:#22c55e; color:white; border-color:#16a34a;" />
+                        </div>
+                    </div>
+                </div>
+            </form>
+        {% endif %}
+    </div>
+</body>
+</html>

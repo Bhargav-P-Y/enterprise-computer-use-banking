@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "interface-ai-build"
+version = "1.0.0"
+description = "Enterprise Computer-Use Automation System for Zero-API Legacy Core Banking Platforms"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Proprietary" }
+dependencies = [
+    "playwright>=1.40.0",
+    "pydantic>=2.5.0",
+    "pydantic-settings>=2.1.0",
+    "typer>=0.9.0",
+    "rich>=13.7.0",
+    "google-genai>=0.1.0",
+    "starlette>=0.32.0",
+    "uvicorn>=0.25.0",
+    "jinja2>=3.1.2",
+    "python-multipart>=0.0.6",
+    "pytest>=7.4.0",
+    "pytest-asyncio>=0.23.0",
+    "python-dotenv>=1.0.0",
+    "requests>=2.31.0",
+    "pillow>=10.0.0",
+]
+
+[project.scripts]
+interface-ai = "src.cli:app"

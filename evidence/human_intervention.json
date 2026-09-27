@@ -1,0 +1,50 @@
+{
+  "intervention_id": "hitl_1789845680",
+  "capability_id": "lookup_savings_balance",
+  "trigger_context": {
+    "reason": "Simulated supervisor signoff on high-value inquiry",
+    "details": {}
+  },
+  "pre_state": {
+    "url": "http://127.0.0.1:8123/servicing/lookup",
+    "screenshot": "evidence\\hitl_1789845680_pre.png",
+    "timestamp_ms": 1789845680597
+  },
+  "recorded_actions": [
+    {
+      "sequence": 1,
+      "action_type": "change",
+      "target": {
+        "tag": "input",
+        "id": "ctl00_Main_txtMemId_8842",
+        "name": "ctl00$Main$txtMemId_8842",
+        "selector": "#ctl00_Main_txtMemId_8842",
+        "coordinates": null
+      },
+      "value": "3011",
+      "is_masked": false,
+      "timestamp_ms": 1789845681083
+    }
+  ],
+  "post_state": {
+    "url": "http://127.0.0.1:8123/servicing/lookup",
+    "screenshot": "evidence\\hitl_1789845680_post.png",
+    "timestamp_ms": 1789845681150
+  },
+  "state_delta": {
+    "url_changed": false,
+    "pre_url": "http://127.0.0.1:8123/servicing/lookup",
+    "post_url": "http://127.0.0.1:8123/servicing/lookup",
+    "elements_added_count": 3,
+    "elements_removed_count": 0,
+    "form_fields_changed": {
+      "ctl00$Main$txtMemId_8842": "3011"
+    },
+    "summary": "1 form fields modified: ['ctl00$Main$txtMemId_8842']; New visible text appeared: ['AUTOMATION PAUSED \u2014 HUMAN OPERATOR IN CONTROL', 'DUAL-STREAM RECORDING ACTIVE', 'Resume Automation \u2192']"
+  },
+  "audit_metadata": {
+    "operator_handoff_duration_ms": 553,
+    "actions_captured": 1,
+    "clean_resumption": true
+  }
+}

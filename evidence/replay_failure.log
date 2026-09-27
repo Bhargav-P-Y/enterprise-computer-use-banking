@@ -1,0 +1,11 @@
+Status: hard_failure
+Failure Context: {
+  "failed_step_id": "step_2_type_text",
+  "expected": "Resolvable element via cascade (Synthesized 4-tier cascade for 'Member ID input text box')",
+  "observed": "Zero matches across all tiers",
+  "evidence_paths": {
+    "screenshot": "evidence\\failure_step_2_type_text_1789845679.png",
+    "dom": "evidence\\failure_step_2_type_text_1789845679.html"
+  }
+}
+Message: Hard failure at step 'step_2_type_text': expected Resolvable element via cascade (Synthesized 4-tier cascade for 'Member ID input text box'), observed Zero matches across all tiers

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Member Search Console</title>
+    <style>
+        body { font-family: Tahoma, 'MS Sans Serif', Arial, sans-serif; font-size: 11px; background-color: #f0f4f8; margin: 10px; color: #1e293b; }
+        .panel-outer { border: 2px solid #708090; background-color: #ffffff; padding: 1px; }
+        .panel-header { background: linear-gradient(180deg, #4682b4, #2c5282); color: white; padding: 4px 8px; font-weight: bold; font-size: 12px; }
+        table.layout-tbl { width: 100%; border-collapse: collapse; }
+        table.form-tbl { border: 1px solid #cbd5e1; margin: 8px; background-color: #f8fafc; }
+        table.form-tbl td { padding: 4px 8px; font-size: 11px; }
+        .field-label { font-weight: bold; color: #334155; text-align: right; width: 140px; }
+        .txt-legacy { border: 1px solid #7f9db9; padding: 3px; font-family: monospace; font-size: 12px; width: 160px; }
+        .btn-legacy { background: #e2e8f0; border: 2px outset #ffffff; padding: 3px 12px; font-weight: bold; font-size: 11px; cursor: pointer; color: #0f172a; }
+        .btn-legacy:active { border-style: inset; }
+        .results-tbl { width: 100%; border-collapse: collapse; margin-top: 10px; border: 1px solid #94a3b8; }
+        .results-tbl th { background-color: #334155; color: white; padding: 5px; font-size: 11px; text-align: left; border: 1px solid #64748b; }
+        .results-tbl td { padding: 5px; border: 1px solid #cbd5e1; font-size: 11px; }
+        .results-tbl tr:nth-child(even) { background-color: #f1f5f9; }
+        .error-msg { background-color: #fee2e2; border: 1px solid #ef4444; color: #991b1b; padding: 6px 12px; font-weight: bold; margin: 8px 0; }
+        .status-active { color: #166534; font-weight: bold; }
+        .status-frozen { color: #991b1b; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="panel-outer">
+        <div class="panel-header">MEMBER LOOKUP &amp; VERIFICATION CONSOLE</div>
+        <table class="layout-tbl">
+            <tr>
+                <td>
+                    <form method="GET" action="/servicing/lookup">
+                        <table class="form-tbl">
+                            <tr>
+                                <td class="field-label">Member ID:</td>
+                                <td>
+                                    <!-- Deliberately dynamic ASP.NET style input with no clean test ID -->
+                                    <input type="text" name="ctl00$Main$txtMemId_8842" id="ctl00_Main_txtMemId_8842" class="txt-legacy" value="{{ query if query else '' }}" autofocus />
+                                </td>
+                                <td>
+                                    <input type="submit" name="ctl00$Main$btnSearch" id="ctl00_Main_btnSearch" value="Lookup Member" class="btn-legacy" />
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding: 0 8px 8px 8px;">
+                    {% if error_message %}
+                        <div id="ctl00_Main_lblError" class="error-msg">{{ error_message }}</div>
+                    {% endif %}
+
+                    {% if members %}
+                        <table class="results-tbl" id="ctl00_Main_gvMembers">
+                            <thead>
+                                <tr>
+                                    <th>Member ID</th>
+                                    <th>Full Name</th>
+                                    <th>DOB</th>
+                                    <th>SSN (Last 4)</th>
+                                    <th>Regular Savings</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for m in members %}
+                                <tr>
+                                    <td><strong>{{ m.member_id }}</strong></td>
+                                    <td>{{ m.full_name }}</td>
+                                    <td>{{ m.dob }}</td>
+                                    <td>***-**-{{ m.ssn_last4 }}</td>
+                                    <td>
+                                        {% if m.get_savings_balance() is not none %}
+                                            ${{ "%.2f"|format(m.get_savings_balance()) }}
+                                        {% else %}
+                                            N/A
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <span class="{{ 'status-active' if m.accounts[0].status == 'ACTIVE' else 'status-frozen' }}">
+                                            {{ m.accounts[0].status }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <a href="/servicing/member/{{ m.member_id }}" id="link_view_{{ m.member_id }}" class="btn-legacy" style="text-decoration: none; padding: 2px 6px;">View Account</a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% endif %}
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

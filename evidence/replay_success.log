@@ -1,0 +1,6 @@
+Status: success
+Duration: 270ms
+Data: {
+  "regular_savings_balance": 4850.25
+}
+Message: Capability replayed successfully with all checkpoints verified.

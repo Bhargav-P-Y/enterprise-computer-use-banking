@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Heritage Federal CU - Core Portal</title>
+    <style>
+        body, html { margin: 0; padding: 0; height: 100%; font-family: 'Segoe UI', Tahoma, Arial, sans-serif; background-color: #dbe4ee; }
+        .top-header { background: #003366; color: #ffffff; padding: 8px 16px; border-bottom: 3px solid #b8860b; }
+        .top-header h1 { margin: 0; font-size: 16px; font-weight: 600; letter-spacing: 0.5px; }
+        .top-header .sys-info { font-size: 11px; color: #cbd5e1; margin-top: 2px; }
+        .nav-bar { background: #e2e8f0; border-bottom: 1px solid #94a3b8; padding: 4px 12px; }
+        .nav-bar a { color: #003366; text-decoration: none; font-size: 12px; font-weight: bold; margin-right: 20px; }
+        .nav-bar a:hover { text-decoration: underline; color: #b8860b; }
+        .content-frame-container { width: 100%; height: calc(100% - 75px); border: none; }
+        iframe { width: 100%; height: 100%; border: none; }
+    </style>
+</head>
+<body>
+    <div class="top-header">
+        <h1>HERITAGE FEDERAL CREDIT UNION &mdash; CORE SERVICING PORTAL</h1>
+        <div class="sys-info">Branch: 014-Central | Terminal ID: WKS-8831 | Operator: SVC_AGENT_9 | Host Version: v4.8.2-SP3</div>
+    </div>
+    <div class="nav-bar">
+        <a href="/servicing/lookup" target="app_main_frame" id="nav_member_search">MEMBER SEARCH</a>
+        <a href="/servicing/transfer" target="app_main_frame" id="nav_transfers">FUNDS TRANSFER</a>
+        <a href="/servicing/status" target="app_main_frame" id="nav_system_status">SYSTEM STATUS</a>
+    </div>
+    <div class="content-frame-container">
+        <iframe id="app_main_frame" name="app_main_frame" src="/servicing/lookup"></iframe>
+    </div>
+</body>
+</html>

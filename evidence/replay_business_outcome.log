@@ -1,0 +1,4 @@
+Status: business_outcome
+Code: MEMBER_NOT_FOUND
+Message: Business exception triggered: MEMBER_NOT_FOUND
+Duration: 150ms

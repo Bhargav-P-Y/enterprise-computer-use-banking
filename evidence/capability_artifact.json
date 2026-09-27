@@ -1,0 +1,238 @@
+{
+  "schema_version": "1.0.0",
+  "metadata": {
+    "capability_id": "lookup_savings_balance",
+    "version": "1.0.0",
+    "description": "Lookup member 1042 and extract regular savings balance",
+    "target_app": "HeritageCoreBanking",
+    "base_url_pattern": "http://127.0.0.1:8123/*",
+    "surface_type": "legacy_web",
+    "risk_level": "safe_idempotent_write",
+    "created_at_utc": "2026-09-19T19:21:18.825956+00:00"
+  },
+  "interface": {
+    "inputs": {
+      "member_id": {
+        "type": "string",
+        "description": "Input parameter for member_id",
+        "pattern": null,
+        "default": null
+      }
+    },
+    "required_inputs": [
+      "member_id"
+    ],
+    "outputs": {
+      "regular_savings_balance": {
+        "type": "number",
+        "description": "Extracted field regular_savings_balance",
+        "pattern": null,
+        "default": null
+      }
+    },
+    "required_outputs": [
+      "regular_savings_balance"
+    ]
+  },
+  "guardrails_ref": {},
+  "steps": [
+    {
+      "step_id": "step_1_navigate",
+      "description": "Initial entrypoint navigation",
+      "action": "navigate",
+      "locator": null,
+      "value_binding": "http://127.0.0.1:8123/servicing/lookup",
+      "is_sensitive": false,
+      "extractions": [],
+      "checkpoint": null
+    },
+    {
+      "step_id": "step_2_type_text",
+      "description": "Member ID input text box",
+      "action": "type_text",
+      "locator": {
+        "tiers": [
+          {
+            "strategy": "role_and_name",
+            "role": "textbox",
+            "name": "Member ID",
+            "label_text": null,
+            "direction": "right",
+            "xpath": null,
+            "coords_ratio": null
+          },
+          {
+            "strategy": "label_proximity",
+            "role": null,
+            "name": null,
+            "label_text": "Member ID",
+            "direction": "right",
+            "xpath": null,
+            "coords_ratio": null
+          },
+          {
+            "strategy": "structural_xpath",
+            "role": null,
+            "name": null,
+            "label_text": null,
+            "direction": "right",
+            "xpath": "//input[not(@type='hidden')][1]",
+            "coords_ratio": null
+          },
+          {
+            "strategy": "coordinate_ratio",
+            "role": null,
+            "name": null,
+            "label_text": null,
+            "direction": "right",
+            "xpath": null,
+            "coords_ratio": [
+              0.5,
+              0.5
+            ]
+          }
+        ],
+        "robustness_rationale": "Synthesized 4-tier cascade for 'Member ID input text box'",
+        "target_frame": null
+      },
+      "value_binding": "$input.member_id",
+      "is_sensitive": false,
+      "extractions": [],
+      "checkpoint": null
+    },
+    {
+      "step_id": "step_3_click",
+      "description": "Lookup Member button",
+      "action": "click",
+      "locator": {
+        "tiers": [
+          {
+            "strategy": "role_and_name",
+            "role": "button",
+            "name": "Lookup Member",
+            "label_text": null,
+            "direction": "right",
+            "xpath": null,
+            "coords_ratio": null
+          },
+          {
+            "strategy": "label_proximity",
+            "role": null,
+            "name": null,
+            "label_text": "Lookup Member",
+            "direction": "right",
+            "xpath": null,
+            "coords_ratio": null
+          },
+          {
+            "strategy": "structural_xpath",
+            "role": null,
+            "name": null,
+            "label_text": null,
+            "direction": "right",
+            "xpath": "//input[@type='submit'] | //button",
+            "coords_ratio": null
+          },
+          {
+            "strategy": "coordinate_ratio",
+            "role": null,
+            "name": null,
+            "label_text": null,
+            "direction": "right",
+            "xpath": null,
+            "coords_ratio": [
+              0.5,
+              0.5
+            ]
+          }
+        ],
+        "robustness_rationale": "Synthesized 4-tier cascade for 'Lookup Member button'",
+        "target_frame": null
+      },
+      "value_binding": null,
+      "is_sensitive": false,
+      "extractions": [],
+      "checkpoint": {
+        "wait_condition": "dom_content_loaded",
+        "timeout_ms": 5000,
+        "assertions": null,
+        "branches": [
+          {
+            "condition_type": "text_visible",
+            "pattern": "No member found",
+            "outcome_category": "business_outcome",
+            "outcome_code": "MEMBER_NOT_FOUND",
+            "message": "Business exception triggered: MEMBER_NOT_FOUND"
+          },
+          {
+            "condition_type": "text_visible",
+            "pattern": "Member details and account table are displayed",
+            "outcome_category": "continue",
+            "outcome_code": null,
+            "message": null
+          }
+        ]
+      }
+    },
+    {
+      "step_id": "step_4_extract_data",
+      "description": "Regular Savings cell in the member search results table",
+      "action": "extract_data",
+      "locator": null,
+      "value_binding": null,
+      "is_sensitive": false,
+      "extractions": [
+        {
+          "output_field": "regular_savings_balance",
+          "locator": {
+            "tiers": [
+              {
+                "strategy": "role_and_name",
+                "role": "button",
+                "name": "Regular Savings",
+                "label_text": null,
+                "direction": "right",
+                "xpath": null,
+                "coords_ratio": null
+              },
+              {
+                "strategy": "label_proximity",
+                "role": null,
+                "name": null,
+                "label_text": "Regular Savings",
+                "direction": "right",
+                "xpath": null,
+                "coords_ratio": null
+              },
+              {
+                "strategy": "structural_xpath",
+                "role": null,
+                "name": null,
+                "label_text": null,
+                "direction": "right",
+                "xpath": "//table[@id='ctl00_Main_gvMembers']//tbody/tr[1]/td[5]",
+                "coords_ratio": null
+              },
+              {
+                "strategy": "coordinate_ratio",
+                "role": null,
+                "name": null,
+                "label_text": null,
+                "direction": "right",
+                "xpath": null,
+                "coords_ratio": [
+                  0.5,
+                  0.5
+                ]
+              }
+            ],
+            "robustness_rationale": "Synthesized 4-tier cascade for 'Regular Savings cell in the member search results table'",
+            "target_frame": null
+          },
+          "transform": "parse_currency"
+        }
+      ],
+      "checkpoint": null
+    }
+  ]
+}
